@@ -29,7 +29,16 @@ icd = ["Bestimmte infektiöse und parasitäre Krankheiten", "Neubildungen", "Kra
 
 # %%
 with open('data/23211-0004.csv', 'rb') as f:
-    df = pd.read_csv(f, sep=';', skiprows=[0, 1, 2, 3, 4, 5, 6, 8], header=[0, 1], index_col=[0, 1], nrows=3200, na_values=['-'], encoding='latin_1')
+    df = pd.read_csv(
+        f,
+        dtype={'männlich': 'Int64', 'weiblich': 'Int64'},
+        encoding='latin_1',
+        header=[0, 1], index_col=[0, 1],
+        na_values=['-'],
+        nrows=3200,
+        sep=';',
+        skiprows=[0, 1, 2, 3, 4, 5, 6, 8]
+    ).fillna(0)
 
 # %%
 df.head()
