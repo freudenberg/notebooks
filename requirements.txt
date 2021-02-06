@@ -1,7 +1,9 @@
+bottleneck
 cufflinks
 ipywidgets
 jupytext
 notebook
+numexpr
 numpy
 pandas
 plotly
