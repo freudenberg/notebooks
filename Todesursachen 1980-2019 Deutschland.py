@@ -47,13 +47,17 @@ df.head()
 # %%
 @widgets.interact
 def show_total_by_year_and_cause(year=(1980, 2019, 1), cause=df.index.get_level_values(1).drop_duplicates()):
-    return df.loc[year, cause].unstack().T
+    df_t = df.loc[year, cause].unstack().T
+    index = df_t.index.to_list()
+    return df_t.reindex([index.pop()] + index)
 
 
 # %%
 @widgets.interact
 def plot_by_year_and_cause(year=(1980, 2019, 1), cause=df.index.get_level_values(1).drop_duplicates()):
-    return df.loc[year, cause].unstack().T.iplot(kind="bar", subplots=False)
+    df_t = df.loc[year, cause].unstack().T
+    index = df_t.index.to_list()
+    return df_t.reindex([index.pop()] + index).iplot(kind="bar", subplots=False)
 
 
 # %%
