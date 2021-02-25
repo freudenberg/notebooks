@@ -7,4 +7,3 @@ numexpr
 numpy
 pandas
 plotly
-seaborn
