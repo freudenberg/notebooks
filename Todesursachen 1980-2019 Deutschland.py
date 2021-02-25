@@ -80,3 +80,22 @@ df.loc[(slice(None), icd + ["Insgesamt"]), :].T.sum().unstack().iplot(kind="bar"
 def series(variables):
     df_t = df.T.sum().unstack()
     return df_t.div(df_t["Insgesamt"], axis="index")[list(variables)].iplot(layout_update=dict(hoverlabel=dict(namelength=-1)))
+
+
+# %%
+df_by_age_group = df.T.groupby(level=1).sum()
+index = df_by_age_group.index.to_list()
+df_by_age_group = df_by_age_group.reindex([index.pop()] + index)
+df_by_age_group.head()
+
+# %%
+df_grouped = pd.concat([df_by_age_group.iloc[0:11].sum(), df_by_age_group.iloc[11:15].sum(), df_by_age_group.iloc[15:17].sum()], keys=["Unter 60 Jahre", "60 bis unter 80 Jahre", "80 Jahre und mehr"]).unstack(level=1)
+
+
+# %%
+@widgets.interact()
+def age_groups_by_cause_and_year(cause=df.index.get_level_values(1).drop_duplicates()):
+    df_grouped = pd.concat([df_by_age_group.iloc[0:11].sum(), df_by_age_group.iloc[11:15].sum(), df_by_age_group.iloc[15:17].sum()], keys=["Unter 60 Jahre", "60 bis unter 80 Jahre", "80 Jahre und mehr"]).unstack(level=0)
+    df_grouped.xs(cause, level=1).iplot(kind="bar", barmode="stack", layout_update=dict(hoverlabel=dict(namelength=-1)))
+
+# %%
