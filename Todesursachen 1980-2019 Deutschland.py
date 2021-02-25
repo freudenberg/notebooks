@@ -78,6 +78,5 @@ df.loc[(slice(None), icd + ["Insgesamt"]), :].T.sum().unstack().iplot(kind="bar"
 # %%
 @widgets.interact(variables=widgets.SelectMultiple(description="Ursachen", options=df.index.get_level_values(1).drop_duplicates(), value=icd, disabled=False))
 def series(variables):
-    return df.loc[(slice(None), variables), :].T.sum().unstack().iplot()
-
-# %%
+    df_t = df.T.sum().unstack()
+    return df_t.div(df_t["Insgesamt"], axis="index")[list(variables)].iplot(layout_update=dict(hoverlabel=dict(namelength=-1)))
