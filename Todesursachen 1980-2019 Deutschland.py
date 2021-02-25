@@ -72,7 +72,7 @@ def plot_by_sex(cause=df.index.get_level_values(1).drop_duplicates()):
 
 
 # %%
-df.loc[(slice(None), icd + ["Insgesamt"]), :].T.sum().unstack().iplot(kind="bar", barmode="overlay")
+df.loc[(slice(None), icd + ["Insgesamt"]), :].T.sum().unstack().iplot(kind="bar", barmode="overlay", layout_update=dict(hoverlabel=dict(namelength=-1)), colorscale='dark2')
 
 
 # %%
