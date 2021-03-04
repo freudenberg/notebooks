@@ -137,9 +137,22 @@ def custom_age_groups(frame):
 
 
 # %%
-@widgets.interact()
-def age_groups_by_cause_and_year(cause=df.index.get_level_values(1).drop_duplicates(), ):
-    df_grouped = custom_age_groups(df_by_age_group).unstack(level=0)
-    df_grouped.xs(cause, level=1).iplot(kind="bar", barmode="stack", layout_update=dict(hoverlabel=dict(namelength=-1)))
+population = load_demographics('data/12411-0007.csv')
+
+
+# %%
+@widgets.interact
+def relative_deatsh_by_age_group(cause=df.index.get_level_values(1).drop_duplicates()):
+    deaths = custom_age_groups(df_by_age_group).unstack(level=0).xs(cause, level=1)
+    population_grouped = custom_age_groups(population.T.groupby(level=0).sum()).unstack(level=0)
+    df_ = deaths / (population_grouped + deaths)
+    df_.loc[1990:].iplot(kind="bar", barmode="group")
+
+
+# %%
+@widgets.interact
+def absolute_deaths_by_age_group(cause=df.index.get_level_values(1).drop_duplicates()):
+    df_ = custom_age_groups(df_by_age_group).unstack(level=0).xs(cause, level=1)
+    df_.loc[1990:].iplot(kind="bar", barmode="group")
 
 # %%
