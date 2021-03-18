@@ -157,7 +157,7 @@ def absolute_deaths_by_age_group(cause=df.index.get_level_values(1).drop_duplica
 
 
 # %%
-@widgets.interact(age_group=widgets.Dropdown(=custom_age_groups(df_by_age_group).index.get_level_values(0).unique()))
+@widgets.interact(age_group=widgets.Dropdown(options=custom_age_groups(df_by_age_group).index.get_level_values(0).unique(), description="Altersgruppe"))
 def plot_percentage_of_cause(age_group):
     df_ = custom_age_groups(df_by_age_group).xs(age_group).unstack()
     return df_.div(df_["Insgesamt"], axis="index")[icd].iplot(kind="bar", barmode="stack", layout_update=dict(hoverlabel=dict(namelength=-1), legend=dict(orientation="h",), yaxis=dict(tickformat=",.0%")))
