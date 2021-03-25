@@ -162,4 +162,25 @@ def plot_percentage_of_cause(age_group):
     df_ = custom_age_groups(df_by_age_group).xs(age_group).unstack()
     return df_.div(df_["Insgesamt"], axis="index")[icd].iplot(kind="bar", barmode="stack", layout_update=dict(hoverlabel=dict(namelength=-1), legend=dict(orientation="h",), yaxis=dict(tickformat=",.0%")))
 
+
+# %%
+def regroup_ages(frame):
+    df_by_age_group = frame.T.unstack(level=0)
+    index = df_by_age_group.index.to_list()
+    return custom_age_groups(df_by_age_group.reindex([index.pop()] + index)).unstack(level=3).unstack(level=0)
+
+
+
+# %%
+df_pct_change = regroup_ages(df).pct_change(df.index.get_level_values(1).nunique()).loc[1981:]
+
+# %%
+more_than_hundred_percent = list()
+
+for row in df_pct_change.iterrows():
+    for k, v in dict(row[1]).items():
+        if v != float("inf") and (v >= 2.0 or v<= -2.0):
+            more_than_hundred_percent.append((row[0], k, v))
+            print(row[0], k, v)
+
 # %%
