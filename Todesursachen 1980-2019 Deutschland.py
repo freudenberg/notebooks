@@ -174,6 +174,14 @@ def absolute_deaths_by_age_group(cause=df.index.get_level_values(1).drop_duplica
 
 
 # %%
+@widgets.interact
+def absolute_death_by_age_group_including_2020():
+    df_ = custom_age_groups(df_by_age_group).unstack(level=0).xs("Insgesamt", level=1)
+    df_2020 = load_2020('data/sonderauswertung-sterbefaelle/D_2016-2021_Monate_AG_Ins-Tabelle 1.csv')
+    return df_.loc[1990:].append([pd.Series([df_2020.iloc[0, 0:8].sum(), df_2020.iloc[0, 8:12].sum(), df_2020.iloc[0, 12:15].sum()], index=["Unter 60 Jahre", "60 bis unter 80 Jahre", "80 Jahre und mehr"], name=2020)]).iplot(kind="bar", barmode="group")
+
+
+# %%
 @widgets.interact(age_group=widgets.Dropdown(options=custom_age_groups(df_by_age_group).index.get_level_values(0).unique(), description="Altersgruppe"))
 def plot_percentage_of_cause(age_group):
     df_ = custom_age_groups(df_by_age_group).xs(age_group).unstack()
