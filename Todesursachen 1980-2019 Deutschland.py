@@ -69,8 +69,6 @@ def load_demographics(file):
 
 
 # %%
-
-# %%
 def load_2020(file):
     with open(file, 'rb') as f:
         df_ = pd.read_csv(
@@ -150,7 +148,7 @@ df_by_age_group.head()
 
 # %%
 def custom_age_groups(frame):
-    return pd.concat([frame.iloc[0:11].sum(), frame.iloc[11:15].sum(), frame.iloc[15:17].sum()], keys=["Unter 60 Jahre", "60 bis unter 80 Jahre", "80 Jahre und mehr"])
+    return pd.concat([frame.iloc[0:13].sum(), frame.iloc[13:16].sum(), frame.iloc[16:17].sum()], keys=["Unter 70 Jahre", "70 bis unter 85 Jahre", "85 Jahre und mehr"])
 
 
 # %%
@@ -178,7 +176,7 @@ def absolute_deaths_by_age_group(cause=df.index.get_level_values(1).drop_duplica
 def absolute_death_by_age_group_including_2020():
     df_ = custom_age_groups(df_by_age_group).unstack(level=0).xs("Insgesamt", level=1)
     df_2020 = load_2020('data/sonderauswertung-sterbefaelle/D_2016-2021_Monate_AG_Ins-Tabelle 1.csv')
-    return df_.loc[1990:].append([pd.Series([df_2020.iloc[0, 0:8].sum(), df_2020.iloc[0, 8:12].sum(), df_2020.iloc[0, 12:15].sum()], index=["Unter 60 Jahre", "60 bis unter 80 Jahre", "80 Jahre und mehr"], name=2020)]).iplot(kind="bar", barmode="group")
+    return df_.loc[1990:].append([pd.Series([df_2020.iloc[0, 0:10].sum(), df_2020.iloc[0, 10:13].sum(), df_2020.iloc[0, 13:].sum()], index=["Unter 70 Jahre", "70 bis unter 85 Jahre", "85 Jahre und mehr"], name=2020)]).iplot(kind="bar", barmode="group")
 
 
 # %%
