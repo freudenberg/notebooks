@@ -69,6 +69,23 @@ def load_demographics(file):
 
 
 # %%
+
+# %%
+def load_2020(file):
+    with open(file, 'rb') as f:
+        df_ = pd.read_csv(
+            f,
+            header=[0], index_col=[0, 1, 2],
+            nrows=34,
+            sep=';',
+            skiprows=[0, 1, 2, 3, 4, 5, 6, 7]
+        ).fillna(0)
+    df_2020 = df_[18:34]["Unnamed: 15"].reset_index().iloc[:, 1:4]
+    df_2020.columns = ["Jahr", "AG", "Anzahl"]
+    return df_2020.set_index(["Jahr", "AG"]).unstack().astype('Int64')
+
+
+# %%
 with open('data/23211-0004.csv', 'rb') as f:
     df = pd.read_csv(
         f,
