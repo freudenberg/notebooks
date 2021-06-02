@@ -176,10 +176,25 @@ def totals_by_custom_age_groups_including_2020():
     df_ = custom_age_groups(df_by_age_group).unstack(level=0).xs("Insgesamt", level=1)
     df_2020 = load_2020('data/sonderauswertung-sterbefaelle/D_2016-2021_Monate_AG_Ins-Tabelle 1.csv')
     return df_.loc[1990:].append([pd.Series([df_2020.iloc[0, 0:10].sum(), df_2020.iloc[0, 10:13].sum(), df_2020.iloc[0, 13:].sum()], index=["Unter 70 Jahre", "70 bis unter 85 Jahre", "85 Jahre und mehr"], name=2020)])
+
+
+# %%
+totals_by_custom_age_groups_including_2020().iplot(kind="bar", barmode="group")
+
+# %%
 totals_by_custom_age_groups_including_2020()
 
 # %%
-totals_by_custom_age.iplot(kind="bar", barmode="group")
+totals_by_custom_age_groups_including_2020().describe()
+
+# %%
+totals_by_custom_age_groups_including_2020().diff()
+
+# %%
+totals_by_custom_age_groups_including_2020().diff().describe()
+
+# %%
+totals_by_custom_age_groups_including_2020().diff()[["Unter 70 Jahre", "70 bis unter 85 Jahre", "85 Jahre und mehr"]].mad()
 
 
 # %%
